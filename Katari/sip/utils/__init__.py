@@ -4,6 +4,7 @@ Utils module containing all sip header classes
 import re
 import logging
 from collections import OrderedDict
+from Katari.errors import *
 
 
 
@@ -69,29 +70,34 @@ class URI:
     def __init__(self, uri):
         self.log = logging.getLogger('Katari')
         self.uri = uri
-       
+        self.expression = re.compile(
+                    '(?P<scheme>\w+):' 
+                    +'(?:(?P<user>[+\w\.\-]+):?(?P<password>[\w\.]+)?@)?'
+                    +'\[?(?P<host>' 
+                        +'(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|' 
+                        +'(?:(?:[0-9a-fA-F]{1,4}):){7}[0-9a-fA-F]{1,4}|' 
+                        +'(?:(?:[0-9A-Za-z]+\.)+[0-9A-Za-z]+)'
+                    +')\]?:?' 
+                    +'(?P<port>\d{1,6})?' 
+                    +'(?:\;(?P<params>[^\?]*))?' 
+                    +'(?:\?(?P<headers>.*))?' 
+        )
         try:
-            self.expression = re.compile(
-                        '(?P<scheme>\w+):' 
-                        +'(?:(?P<user>[+\w\.]+):?(?P<password>[\w\.]+)?@)?'
-                        +'\[?(?P<host>' 
-                            +'(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|' 
-                            +'(?:(?:[0-9a-fA-F]{1,4}):){7}[0-9a-fA-F]{1,4}|' 
-                            +'(?:(?:[0-9A-Za-z]+\.)+[0-9A-Za-z]+)'
-                        +')\]?:?' 
-                        +'(?P<port>\d{1,6})?' 
-                        +'(?:\;(?P<params>[^\?]*))?' 
-                        +'(?:\?(?P<headers>.*))?' 
-            )
             self.user = self.expression.search(uri).group('user')
+        except:
+            self.log.info("Unable to find user in URI: {}".format(uri))
+        try:
             self.params = self.expression.search(uri).group('params')
-            self.address = self.expression.search(uri).group('port')
-            self.port = self.expression.search(uri).group('headers')
+        except:
+            self.log.info("Unable to find params in URI: {}".format(uri))
+        try:
             self.address = self.expression.search(uri).group('host')
-        except Exception as err:
-            self.log.exception(err)
-            self.user = uri
-            self.address = uri
+        except:
+            self.log.info("Unable to find host in URI: {}".format(uri))
+        try:
+            self.port = self.expression.search(uri).group('port')
+        except:
+            self.log.info("Unable to find port in URI: {}".format(uri))
 
     def __repr__(self):
         return self.uri
