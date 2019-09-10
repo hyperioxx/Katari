@@ -20,7 +20,10 @@ class MovedTemporarily302(SipMessage):
     def append_contact(self, contact, weight):
         def create_sip_uri(contact, weight):
             return "<sip:{}>;q={}".format(contact, weight)
-        self._data["contact"] = self._data["contact"] + create_sip_uri(contact, weight)
+        if self._data["contact"]:
+            self._data["contact"] = self._data["contact"] + "," + create_sip_uri(contact, weight)
+        else:
+            self._data["contact"] = self._data["contact"] + create_sip_uri(contact, weight)
 
     def clean_contact(self):
         self._data["contact"] = ""
