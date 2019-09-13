@@ -21,15 +21,15 @@ class BuildApp(BaseCommand):
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
             self.copy_template(self._find_katari(), self.directory)
-            print(self.bash_green+"Project Created"+self.end_bash_colour)
+            print(self.bash_green + "Project Created" + self.end_bash_colour)
             sys.exit()
         print(self.bash_red + "Project {} already exists!".format(self.directory) + self.end_bash_colour)
 
 
     def _find_katari(self):
         for path in site.getsitepackages():
-            if os.path.exists(path+self.katari_path):
-                return path+self.katari_path
+            if os.path.exists(path + self.katari_path):
+                return path + self.katari_path
             return "fuck"
 
     def _valid_project_name(self, directory):
@@ -41,7 +41,7 @@ class BuildApp(BaseCommand):
         for file in os.listdir(src_loc):
             if file[:2] != "__":
                 try:
-                    copy2(src_loc+"/"+file, dst_loc)
+                    copy2(src_loc + "/" + file, dst_loc)
                 except IOError:
                     print("Somthing bad happened....")
 
