@@ -34,7 +34,7 @@ class UDPSipServer(socketserver.DatagramRequestHandler):
         """
 
         UDPSipServer.application = applcation
-        UDPServerObject = socketserver.ForkingUDPServer(ServerAddress, UDPSipServer)
+        UDPServerObject = socketserver.UDPServer(ServerAddress, UDPSipServer)
         UDPServerObject.serve_forever()
 
 
