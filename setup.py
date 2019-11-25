@@ -36,7 +36,7 @@ setup(
     long_description_content_type="text/markdown",
     scripts=['scripts/katari'],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.6",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
     ],
