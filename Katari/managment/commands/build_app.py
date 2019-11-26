@@ -29,8 +29,8 @@ class BuildApp(BaseCommand):
     def _find_katari(self):
         for path in site.getsitepackages():
             if os.path.exists(path + self.katari_path):
-                return path + self.katari_path
-            return "fuck"
+                return path + self.katari_path  
+        raise Exception(self.bash_red +"Unable to find Katari"+ self.end_bash_colour)
 
     def _valid_project_name(self, directory):
         if directory == "build-app":
