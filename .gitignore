@@ -3,3 +3,4 @@ dist/
 Katari.egg-info/
 PySIPENV/
 __pycache__
+venv/
